@@ -1,0 +1,73 @@
+
+services:
+  # ─── MySQL Database ───
+  database:
+    image: mysql:8.0
+    container_name: globetrotter-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: globetrotter
+      MYSQL_USER: globetrotter_user
+      MYSQL_PASSWORD: globetrotter_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - globetrotter-net
+
+  # ─── FastAPI Backend ───
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: globetrotter-backend
+    restart: always
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      # Database — connect to the MySQL container
+      DATABASE_URL: mysql+pymysql://globetrotter_user:globetrotter_pass@database:3306/globetrotter
+      # JWT
+      JWT_SECRET_KEY: globetrotter-super-secure-jwt-secret-key-2026-production
+      # App
+      ENVIRONMENT: production
+      # SMTP email (pass through from host .env or override here)
+      SMTP_HOST: ${SMTP_HOST:-smtp.gmail.com}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_FROM: ${SMTP_FROM:-GlobeTrotter Support <noreply@globetrotter.com>}
+    ports:
+      - "8000:8000"
+    networks:
+      - globetrotter-net
+
+  # ─── React Frontend (Nginx) ───
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: globetrotter-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    networks:
+      - globetrotter-net
+
+networks:
+  globetrotter-net:
+    driver: bridge
+
+volumes:
+  mysql_data:
