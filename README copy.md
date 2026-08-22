@@ -4,7 +4,7 @@ GlobeTrotter is a desktop-first smart travel planning platform built to simplify
 
 ---
 
-##  Key Highlights & Features
+## 🌟 Key Highlights & Features
 
 - **India-First Verified Destination Data**: Pre-seeded with 30+ major Indian cities (Jaipur, Udaipur, Jodhpur, Jaisalmer, Ahmedabad, Mumbai, Delhi, Goa, Varanasi, Agra, Bengaluru, Srinagar, Amritsar, etc.) and 80+ realistic authentic activities with genuine Unsplash photography.
 - **3-Pane Itinerary Builder (Screen 5)**:
@@ -27,7 +27,7 @@ GlobeTrotter is a desktop-first smart travel planning platform built to simplify
 
 ---
 
-##  Quick Start (Local Development)
+## 🚀 Quick Start (Local Development)
 
 ### 1. Start the Backend API (FastAPI)
 ```bash
@@ -48,7 +48,7 @@ npm run dev
 
 ---
 
-##  Docker Deployment
+## 🐳 Docker Deployment
 
 To launch the complete production stack (MySQL 8.0 + FastAPI + Nginx React Frontend):
 
@@ -60,8 +60,16 @@ docker-compose up --build
 
 ---
 
+## 👤 Pre-Seeded Demo Accounts
 
-## Project Structure
+| Role | Email | Password | Pre-seeded Features |
+|---|---|---|---|
+| **Demo Traveler** | `demo@globetrotter.local` | `Demo@12345` | Flagship **"Rajasthan Explorer"** 7-day trip (Ahmedabad → Udaipur → Jaipur → Jodhpur → Jaisalmer) with full schedule, stops, and budget analytics. |
+| **Demo Admin** | `admin@globetrotter.local` | `Admin@12345` | Full administrative control, user directory, and destination management. |
+
+---
+
+## 📐 Project Structure
 
 ```
 GlobeTrotter/
